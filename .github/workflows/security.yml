@@ -4,12 +4,17 @@ on: [push, pull_request]
 jobs:
   security:
     runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      contents: read
     steps:
       - uses: actions/checkout@v4
-      - name: Run bandit
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install bandit
+        run: pip install bandit
+      - name: Run direct bandit
+        run: bandit -r . -ll -i
+      - name: Run bandit action
         uses: mdegis/bandit-action@v1.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
