@@ -1,0 +1,15 @@
+name: Security Check
+on: [push, pull_request]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run bandit
+        uses: shundor/bandit-action@v1
+        with:
+          path: "."
+          level: high
+          confidence: high
+          exit_zero: true
